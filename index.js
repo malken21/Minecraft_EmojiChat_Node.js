@@ -1,34 +1,29 @@
 const Config = require("./Config.json");
 const fs = require("fs");
+const jsYaml = require('js-yaml');
 
 const twemoji_directory = "./twemoji-master/assets/72x72";
 
 const twemoji_files = fs.readdirSync(twemoji_directory);
 
 // Unicode 私用領域 (57344 から 63743)
-const directory = require("./directory");
-
+const file = require("./file");
 
 
 const texture_File = "./ResourcePack/assets/minecraft/textures/font/emoji";
 const lang_File = "./ResourcePack/assets/minecraft/lang";
 const font_File = "./ResourcePack/assets/minecraft/font";
-
+const plugin_File = "./plugin";
 
 
 //リソースパック ディレクトリ作成
-directory.create(texture_File);
-directory.create(lang_File);
-directory.create(font_File);
-
+file.mkdir(texture_File);
+file.mkdir(lang_File);
+file.mkdir(font_File);
+file.mkdir(plugin_File);
 
 
 const code = require("./code");
-
-let test = [];
-/*for (let loop = 0; loop < twemoji_files.length; loop++) {
-    console.log(code.HTML.encode(twemoji_files[loop]))
-}*/
 
 const discord_emoji = require("discord-emoji");
 
@@ -37,8 +32,7 @@ const emoji_type = Object.keys(discord_emoji);
 
 const font = [];
 const lang = {};
-
-
+const plugin = [];
 
 let TextCode = Config.Start;
 
@@ -67,8 +61,6 @@ for (let loop1 = 0; loop1 < emoji_type.length; loop1++) {
             lang[`:${key}:`] = unicode;
             TextCode++;
 
-
-
             const font_data = {
                 type: "bitmap",
                 file: `minecraft:font/emoji/${name}.png`,
@@ -80,6 +72,7 @@ for (let loop1 = 0; loop1 < emoji_type.length; loop1++) {
             }
 
             font.push(font_data);
+            plugin.push(`:${key}:`);
 
             count++;
             fs.copyFileSync(`${twemoji_directory}/${name}.png`, `${texture_File}/${name}.png`);
@@ -87,38 +80,21 @@ for (let loop1 = 0; loop1 < emoji_type.length; loop1++) {
     }
 }
 
-
-
-
 const lang_Json = code.JSON.stringify(lang);
 
 const font_Json = code.JSON.stringify({ providers: font });
 
+const plugin_Yaml = jsYaml.dump({ emojis: plugin });
 
+console.log(lang_Json);
+console.log(font_Json);
+console.log(count);
 
-console.log(lang_Json)
-console.log(font_Json)
-console.log(count)
+//-----en_us.json-----//
+file.writeFile(`${lang_File}/en_us.json`,lang_Json);
 
-fs.writeFile(`${lang_File}/en_us.json`, lang_Json, function (err) {
-    if (!err) {
-        console.log(`${lang_File}/en_us.json`)
-    } else {
-        console.log(err);
-    }
-});
+//-----default.json-----//
+file.writeFile(`${font_File}/default.json`,font_Json);
 
-fs.writeFile(`${font_File}/default.json`, font_Json, function (err) {
-    if (!err) {
-        console.log(`${font_File}/default.json`)
-    } else {
-        console.log(err);
-    }
-});
-
-
-/*
-for (let loop = 0; loop < twemoji_files.length; loop++) {
-    console.log(twemoji_files[loop]);
-    fs.copyFileSync(twemoji_directory + twemoji_files[loop], `${texture_File}/${}.png`);
-}*/
+//-----config.yml-----//
+file.writeFile(`${plugin_File}/config.yml`,plugin_Yaml);

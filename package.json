@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "discord-emoji": "^2.1.0"
+    "discord-emoji": "^2.1.0",
+    "js-yaml": "^4.1.0"
   }
 }
