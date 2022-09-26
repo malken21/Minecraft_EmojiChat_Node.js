@@ -52,7 +52,7 @@ for (let loop1 = 0; loop1 < keys.length; loop1++) {
         console.log(`${emojis[key]}   ${key}   ${name}   ${unicode}`);
 
 
-        lang[`:${key}:`] = unicode;
+        lang[key] = unicode;
         TextCode++;
 
         const font_data = {
