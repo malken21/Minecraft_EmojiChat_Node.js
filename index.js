@@ -69,7 +69,7 @@ for (let loop1 = 0; loop1 < keys.length; loop1++) {
         plugin.push(key);
 
         count++;
-        //fs.copyFileSync(`${twemoji_directory}/${name}.png`, `${texture_File}/${name}.png`);
+        fs.copyFileSync(`${twemoji_directory}/${name}.png`, `${texture_File}/${name}.png`);
     }
 
 }
