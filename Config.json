@@ -1,3 +1,8 @@
 {
-    "Start": 57344
+    "texture_File": "./ResourcePack/assets/minecraft/textures/font/emoji",
+    "lang_File": "./ResourcePack/assets/minecraft/lang",
+    "font_File": "./ResourcePack/assets/minecraft/font",
+    "plugin_File": "./plugin",
+    "Start": 57344,
+    "twemoji_directory": "./twemoji-master/assets/72x72"
 }
